@@ -1,0 +1,15 @@
+import sys
+from twython import Twython
+
+APP_KEY = sys.argv[1]
+APP_SECRET = sys.argv[2]
+
+twitter = Twython(APP_KEY, APP_SECRET, oauth_version=2)
+ACCESS_TOKEN = twitter.obtain_access_token()
+
+twitter = Twython(APP_KEY, access_token=ACCESS_TOKEN)
+
+search = twitter.search(q='python')
+if search.get('statuses'):
+    for search in search['statuses']:
+        print ("TWEET: " + unicode(search['text']).encode('utf-8') + " USER: " + unicode(search['user']['name']).encode('utf-8'))
