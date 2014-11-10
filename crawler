@@ -1,15 +1,36 @@
+from twython import TwythonStreamer
+
+class TweetStreamer(TwythonStreamer):
+    def on_success(self, data):
+        if 'text' in data:
+            print data['text'].encode('utf-8')
+
+    def on_error(self, status_code, data):
+        print status_code
+        self.disconnect()
+
 import sys
 from twython import Twython
 
 APP_KEY = sys.argv[1]
 APP_SECRET = sys.argv[2]
+ACCESS_KEY = sys.argv[3]
+ACCESS_SECRET = sys.argv[4]
 
-twitter = Twython(APP_KEY, APP_SECRET, oauth_version=2)
-ACCESS_TOKEN = twitter.obtain_access_token()
+streamer = TweetStreamer(APP_KEY, APP_SECRET,
+                         ACCESS_KEY, ACCESS_SECRET)
 
-twitter = Twython(APP_KEY, access_token=ACCESS_TOKEN)
+streamer.statuses.filter(language='en')
 
-search = twitter.search(q='python')
-if search.get('statuses'):
-    for search in search['statuses']:
-        print ("TWEET: " + unicode(search['text']).encode('utf-8') + " USER: " + unicode(search['user']['name']).encode('utf-8'))
+#twitter = Twython(APP_KEY, APP_SECRET, ACCESS_KEY, ACCESS_SECRET)
+#ACCESS_TOKEN = twitter.obtain_access_token()
+
+#twitter = Twython(APP_KEY, access_token=ACCESS_TOKEN)
+
+
+
+#search = twitter.search(q='python')
+#if search.get('statuses'):
+#    for search in search['statuses']:
+#        print ("TWEET: " + unicode(search['text']).encode('utf-8') + " USER: " + unicode(search['user']['name']).encode('utf-8'))
+
