@@ -10,11 +10,8 @@
 require_once('140dev_config.php');
 require_once('db_lib.php');
 $oDB = new db;
-$filename = 'Tweets.txt';
+$filename = 'tweets.txt';
 // This should run continuously as a background process
-
-$tweetsString = '{"tweets":[';
-$writeTweet = true;
 
 // Process all new tweets
 $query = 'SELECT tweet_text ' .
@@ -22,6 +19,9 @@ $query = 'SELECT tweet_text ' .
     'ORDER BY tweet_id '.
     'LIMIT 0 , 500';
 while (true) {
+
+    $tweetsString = '';
+    $writeTweet = false;
 
     $result = $oDB->select($query);
     while($row = mysqli_fetch_assoc($result)) {
@@ -45,7 +45,5 @@ while (true) {
             $oDB->select("DELETE FROM users");
         }
     }
-    $writeTweet = false;
-    $tweetsString = '';
     sleep(20);
 }
