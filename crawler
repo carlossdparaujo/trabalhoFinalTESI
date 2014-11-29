@@ -20,7 +20,7 @@ ACCESS_SECRET = sys.argv[4]
 streamer = TweetStreamer(APP_KEY, APP_SECRET,
                          ACCESS_KEY, ACCESS_SECRET)
 
-streamer.statuses.filter(language='en')
+streamer.statuses.filter(track='language=en')
 
 #twitter = Twython(APP_KEY, APP_SECRET, ACCESS_KEY, ACCESS_SECRET)
 #ACCESS_TOKEN = twitter.obtain_access_token()

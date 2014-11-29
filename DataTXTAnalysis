@@ -1,0 +1,40 @@
+from dandelion import DataTXT
+import csv
+
+datatxt = DataTXT(app_id='003038ef', app_key='5c60f21c27fccc22fd82d9c799ae9614')
+
+precision = 1
+
+csvfile = open('output.csv', 'w')
+othercsvfile = open('input.csv', 'r')
+fieldnames = ['Tweets']
+writer = csv.writer(csvfile)
+
+reader = csv.reader(othercsvfile)
+all = []
+row = next(reader)
+
+while (precision >= 0):
+	row.append("Precision " + str(precision))
+	precision -= 0.1
+precision = 1
+all.append(row)
+
+for row in reader:
+	print row
+	if row[0] == '':
+		continue
+	while (precision >= 0):
+		try:
+			response = datatxt.nex(row[0].decode('UTF-8'), min_confidence=precision, parse_hashtag=True, include='lod')
+		except:
+			break
+		entities = ""
+		for annotation in response.annotations:
+			entities += annotation.label.encode('UTF-8') + ","
+		row.append(entities[:-1])
+		precision -= 0.1
+	all.append(row)
+	precision = 1
+
+writer.writerows(all)
