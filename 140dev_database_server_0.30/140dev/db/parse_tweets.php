@@ -30,7 +30,7 @@ while (true) {
 		
 		// Limit tweets tgo a single language,
 		// such as 'en' for English
-		if ($tweet_object->lang <> 'en') {continue;}
+		if ($tweet_object->lang <> 'en' && $tweet_object->lang <> 'pt') {continue;}
 		
 		// The streaming API sometimes sends duplicates, 
     // Test the tweet_id before inserting
