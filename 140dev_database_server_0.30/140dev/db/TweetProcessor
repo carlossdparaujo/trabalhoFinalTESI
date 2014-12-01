@@ -1,0 +1,33 @@
+from dandelion import DataTXT
+import json
+import csv
+import time
+
+time.sleep(25)
+datatxt = DataTXT(app_id='653feba4', app_key='9375ad618c9bee3eaa64bb840c4d695d')
+
+while True:
+	file = open("tweets.txt", "r")
+	text = file.read().decode('UTF-8')
+	decoded = json.loads(text[1:])
+	file.close()
+
+	precision = 0.7681
+
+	tweets = {'tweets' : []}
+	index = 0
+	for tweet in decoded['tweet']:
+		try:
+			response = datatxt.nex(tweet['tweetText'], min_confidence=precision, parse_hashtag=True, include='lod')
+		except:
+			continue
+		for annotation in response.annotations:
+			tweets['tweets'].append({'entity' : {}})
+			tweets['tweets'][index]['label'] = annotation.spot.encode('UTF-8')
+			tweets['tweets'][index]['dbpedia'] = annotation.lod.dbpedia
+			index += 1
+		
+	file = open("entities.json", "w")
+	file.write(json.dumps(tweets, separators=(',',':')))
+	file.close()
+	time.sleep(20);	

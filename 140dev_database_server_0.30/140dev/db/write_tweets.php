@@ -12,14 +12,13 @@ require_once('db_lib.php');
 $oDB = new db;
 $filename = 'tweets.txt';
 // This should run continuously as a background process
-
+sleep(20);
 // Process all new tweets
 $query = 'SELECT tweet_text ' .
     'FROM tweets '.
     'ORDER BY tweet_id '.
     'LIMIT 0 , 500';
 while (true) {
-
     $tweetsString = '';
     $writeTweet = false;
 
@@ -33,15 +32,19 @@ while (true) {
             $tweetsString .= '{"tweetText":'.$tweet_text.'},';
         }
     }
+
     if($writeTweet)
     {
-        $fileWriteResult = file_put_contents( $filename, $tweetsString , FILE_APPEND | LOCK_EX | FILE_TEXT );
+        $tweetsString = '{"tweet":['.$tweetsString;
+        $tweetsString[strlen($tweetsString)-1] = "]}";
+
+        $fileWriteResult = file_put_contents( $filename, $tweetsString , LOCK_EX | FILE_TEXT );
         if($fileWriteResult)
         {
             $oDB->select("DELETE FROM tweets ORDER BY tweet_id LIMIT 500");
-            $oDB->select("DELETE FROM tweets_mentions");
-            $oDB->select("DELETE FROM tweets_tags");
-            $oDB->select("DELETE FROM tweets_urls");
+            $oDB->select("DELETE FROM tweet_mentions");
+            $oDB->select("DELETE FROM tweet_tags");
+            $oDB->select("DELETE FROM tweet_urls");
             $oDB->select("DELETE FROM users");
         }
     }

@@ -64,6 +64,7 @@ while (true) {
     $screen_name = $oDB->escape($user_object->screen_name);
     $name = $oDB->escape($user_object->name);
     $profile_image_url = $user_object->profile_image_url;
+    $lang = $user_object->lang;
 
 		
     // Add a new user row or update an existing one
@@ -98,6 +99,7 @@ while (true) {
         'screen_name = "' . $screen_name . '", ' .
         'name = "' . $name . '", ' .
         'profile_image_url = "' . $profile_image_url . '", ' .
+        'language = "' . $lang . '", ' .
         'is_rt = ' . $is_rt;
 			
     $oDB->insert('tweets',$field_values);
