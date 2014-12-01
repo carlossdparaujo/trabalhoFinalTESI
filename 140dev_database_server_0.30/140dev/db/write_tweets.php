@@ -35,8 +35,8 @@ while (true) {
 
     if($writeTweet)
     {
-        $tweetsString[strlen($tweetsString)-1] = "";
-        $tweetsString = '{"tweet":['.$tweetsString."]}";;
+        $tweetsString = substr($tweetsString,0,strlen($tweetsString)-1);
+        $tweetsString = '{"tweet":['.$tweetsString."]}";
 
 
         $fileWriteResult = file_put_contents( $filename, $tweetsString , LOCK_EX | FILE_TEXT );
