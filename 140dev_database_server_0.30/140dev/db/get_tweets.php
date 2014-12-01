@@ -51,7 +51,7 @@ $stream->db_connect();
 // More keywords can be added as array elements
 // For example: array('recipe','food','cook','restaurant','great meal')
 //$stream->setTrack(array('Rio de Janeiro', 'Brasil', 'filme','lugar','Dilma','teatro','jogo','religião','deus'));
-$stream->setLang('por');
+//$stream->setLang('por');
 
 // Start collecting tweets
 // Automatically call enqueueStatus($status) with each tweet's JSON data
